@@ -1,3 +1,0 @@
-#!/bin/bash 
-
-asciidoctor article.adoc
