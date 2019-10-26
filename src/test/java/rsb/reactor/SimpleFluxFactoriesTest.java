@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class SimpleFluxFactories {
+public class SimpleFluxFactoriesTest {
 
 	@Test
 	public void simple() {
