@@ -23,7 +23,7 @@ public class SimpleFluxFactoriesTest {
 		Flux<String> letters = Flux.just("A", "B", "C");
 		StepVerifier.create(letters).expectNext("A", "B", "C").verifyComplete();
 
-		var now = System.currentTimeMillis();
+		long now = System.currentTimeMillis();
 		Mono<Date> greetingMono = Mono.just(new Date(now));
 		StepVerifier.create(greetingMono).expectNext(new Date(now)).verifyComplete();
 
@@ -42,7 +42,6 @@ public class SimpleFluxFactoriesTest {
 		Flux<Integer> integerFlux = Flux.fromStream(Stream.generate(supplier));
 		StepVerifier.create(integerFlux.take(3)).expectNext(1).expectNext(2).expectNext(3)
 				.verifyComplete();
-
 	}
 
 }
