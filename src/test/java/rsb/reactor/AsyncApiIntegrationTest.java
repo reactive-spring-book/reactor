@@ -21,7 +21,6 @@ public class AsyncApiIntegrationTest {
 	@Test
 	public void async() {
 		Flux<Integer> integers = Flux.create(emitter -> this.launch(emitter, 5));
-
 		StepVerifier
 				.create(integers.doFinally(signalType -> this.executorService.shutdown()))
 				.expectNextCount(5).verifyComplete();
