@@ -35,7 +35,7 @@ public class FlatMapTest {
 				break;
 			}
 		}
-		Assert.assertTrue("The elements should be out of order, eventually.",
+		Assert.assertTrue("The elements should eventually be out of order.",
 				outOutOfOrder);
 	}
 
