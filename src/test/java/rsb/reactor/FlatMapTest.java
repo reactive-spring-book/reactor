@@ -4,7 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.reactivestreams.Publisher;
+import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
+@RunWith(SpringRunner.class)
 public class FlatMapTest {
 
 	private final List<Integer> concurrentList = new ArrayList<>();
@@ -24,7 +27,6 @@ public class FlatMapTest {
 
 	@Test
 	public void flatMap() {
-		Assert.assertTrue(false);// TODO remove this
 		var count = 0;
 		var outOutOfOrder = false;
 		while (count++ < 3) {
@@ -33,7 +35,7 @@ public class FlatMapTest {
 				break;
 			}
 		}
-		Assert.assertTrue("the elements should be out of order, eventually.",
+		Assert.assertTrue("The elements should be out of order, eventually.",
 				outOutOfOrder);
 	}
 
