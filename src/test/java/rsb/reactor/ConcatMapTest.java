@@ -30,7 +30,7 @@ public class ConcatMapTest {
 		Flux<Integer> data = Flux.range(0, max).concatMap(this::add);
 		StepVerifier.create(data).expectNext(0, 1, 2, 3, 4).verifyComplete();
 		for (int i = 0; i < max; i++)
-			Assert.assertEquals(concurrentList.get(i), (Integer) i);
+			Assert.assertEquals(this.concurrentList.get(i), (Integer) i);
 	}
 
 	private Publisher<Integer> add(Integer a) {
@@ -47,7 +47,8 @@ public class ConcatMapTest {
 			this.concurrentList.add(a);
 			sink.next(a);
 			sink.complete();
-		}).subscribeOn(Schedulers.boundedElastic());
+		})//
+				.subscribeOn(Schedulers.boundedElastic());
 	}
 
 }
