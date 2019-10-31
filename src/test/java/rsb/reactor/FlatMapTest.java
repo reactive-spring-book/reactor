@@ -25,6 +25,7 @@ public class FlatMapTest {
 
 	@Test
 	public void flatMap() {
+		Assert.assertTrue(false);
 		var count = 0;
 		var outOutOfOrder = false;
 		while (count++ < 3) {
