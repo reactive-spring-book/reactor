@@ -12,9 +12,14 @@ public class HandleTest {
 	public void handle() throws Exception {
 
 		Flux<Integer> values = Flux//
-				.range(0, 5)//
+				.range(0, 7)//
 				.handle((value, sink) -> {
-					if (value % 2 == 0) {
+					if (value == 6) { // trigger completion on the receipt of a special
+										// message
+						sink.complete();
+						return;
+					}
+					if (value % 2 == 0) { // emit only the even numbers below 6
 						sink.next(value);
 					}
 				});
