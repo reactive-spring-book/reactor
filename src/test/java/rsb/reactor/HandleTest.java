@@ -25,8 +25,10 @@ public class HandleTest {
 			}
 			sink.complete();
 		});
-		StepVerifier.create(range).expectNext(0, 1, 2, 3)
-				.expectError(IllegalArgumentException.class).verify();
+		StepVerifier.create(range)//
+				.expectNext(0, 1, 2, 3)//
+				.expectError(IllegalArgumentException.class)//
+				.verify();
 	}
 
 }
