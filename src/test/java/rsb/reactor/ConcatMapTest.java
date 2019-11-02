@@ -26,7 +26,7 @@ public class ConcatMapTest {
 
 	@Test
 	public void concatMap() {
-		int max = 5;
+		var max = 5;
 		Flux<Integer> data = Flux.range(0, max).concatMap(this::add);
 		StepVerifier.create(data).expectNext(0, 1, 2, 3, 4).verifyComplete();
 		for (int i = 0; i < max; i++)

@@ -1,26 +1,31 @@
 package rsb.reactor;
 
+import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
-import java.util.function.Function;
+import java.time.Duration;
 
+@Log4j2
 public class SwitchMapTest {
 
 	@Test
-	public void switchMapTest() throws Exception {
+	public void switchMap() {
+		Flux<Integer> source = Flux.just(1, 2, 3)
+				.switchMap(i -> Flux.just(i).delayElements(Duration.ofMillis(100)));
+		StepVerifier.create(source).expectNext(3).verifyComplete();
+	}
 
-		var letters = Flux.just("a", "b", "c");
-		var numbers = Flux.generate(sink -> sink.next(""));
+	@Test
+	public void switchMapWithLookaheads() {
+		Flux<String> source = Flux.just("re", "rea", "reac", "react", "reactive")
+				.delayElements(Duration.ofMillis(100)).switchMap(this::lookup);
+		StepVerifier.create(source).expectNext("reactive -> reactive").verifyComplete();
+	}
 
-		// Flux<Object> switchMap = data.switchMap(new Function<String, Publisher<?>>() {
-		// @Override
-		// public Publisher<?> apply(String s) {
-		// return null;
-		// }
-		// });
-
+	private Flux<String> lookup(String word) {
+		return Flux.just(word + " -> reactive").delayElements(Duration.ofMillis(500));
 	}
 
 }

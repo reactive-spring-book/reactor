@@ -1,70 +1,35 @@
 package rsb.reactor;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.reactivestreams.Publisher;
-import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Duration;
 
 @Log4j2
-@RunWith(SpringRunner.class)
 public class FlatMapTest {
-
-	private final List<Integer> concurrentList = new ArrayList<>();
-
-	@Before
-	public void reset() {
-		this.concurrentList.clear();
-	}
 
 	@Test
 	public void flatMap() {
-		var count = 0;
-		var outOutOfOrder = false;
-		while (count++ < 3) {
-			log.info("loop " + count);
-			if (outOutOfOrder = this.attemptToObserveOutOfOrderResults()) {
-				break;
-			}
-		}
-		Assert.assertTrue("The elements should eventually be out of order.",
-				outOutOfOrder);
+		Flux<Integer> data = Flux
+				.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))//
+				.flatMap(id -> delayReplyFor(id.id, id.delay));
+		StepVerifier.create(data).expectNext(3, 2, 1).verifyComplete();
 	}
 
-	private boolean attemptToObserveOutOfOrderResults() {
-		int max = 5;
-		Flux<Integer> data = Flux.range(0, max).flatMap(this::add);
-		StepVerifier.create(data).expectNextCount(max).verifyComplete();
-		for (int i = 0; i < max; i++) {
-			if (concurrentList.get(i) != i) {
-				return true;
-			}
-		}
-		return false;
+	@AllArgsConstructor
+	static class Pair {
+
+		private int id;
+
+		private long delay;
+
 	}
 
-	private Publisher<Integer> add(Integer a) {
-		return Flux.<Integer>create(sink -> {
-			var random = Math.random();
-			var sleep = (long) (random * 1_000);
-			try {
-				Thread.sleep(sleep);
-			}
-			catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			this.concurrentList.add(a);
-			sink.next(a);
-			sink.complete();
-		}).subscribeOn(Schedulers.boundedElastic());
+	private Flux<Integer> delayReplyFor(Integer i, long delay) {
+		return Flux.just(i).delayElements(Duration.ofMillis(delay));
 	}
 
 }
