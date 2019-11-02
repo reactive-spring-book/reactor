@@ -1,54 +1,37 @@
 package rsb.reactor;
 
-import lombok.SneakyThrows;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.time.Duration;
 
 @Log4j2
 public class ConcatMapTest {
 
-	private final List<Integer> concurrentList = new ArrayList<>();
-
-	@Before
-	public void reset() {
-		this.concurrentList.clear();
-	}
-
 	@Test
 	public void concatMap() {
-		var max = 5;
-		Flux<Integer> data = Flux.range(0, max).concatMap(this::add);
-		StepVerifier.create(data).expectNext(0, 1, 2, 3, 4).verifyComplete();
-		for (int i = 0; i < max; i++)
-			Assert.assertEquals(this.concurrentList.get(i), (Integer) i);
+		Flux<Integer> data = Flux
+				.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))//
+				.concatMap(id -> this.delayReplyFor(id.id, id.delay));
+		StepVerifier//
+				.create(data)//
+				.expectNext(1, 2, 3)//
+				.verifyComplete();
 	}
 
-	private Publisher<Integer> add(Integer a) {
-		return Flux.<Integer>create(sink -> {
-			var random = Math.random();
-			var sleep = (long) (random * 1_000);
-			try {
-				log.info("sleeping " + sleep);
-				Thread.sleep(sleep);
-			}
-			catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			this.concurrentList.add(a);
-			sink.next(a);
-			sink.complete();
-		})//
-				.subscribeOn(Schedulers.boundedElastic());
+	@AllArgsConstructor
+	static class Pair {
+
+		private int id;
+
+		private long delay;
+
+	}
+
+	private Flux<Integer> delayReplyFor(Integer i, long delay) {
+		return Flux.just(i).delayElements(Duration.ofMillis(delay));
 	}
 
 }
