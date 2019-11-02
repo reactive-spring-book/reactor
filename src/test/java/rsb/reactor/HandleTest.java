@@ -12,7 +12,8 @@ public class HandleTest {
 	public void handle() throws Exception {
 
 		Flux<Integer> values = Flux//
-				.range(0, 5).handle((value, sink) -> {
+				.range(0, 5)//
+				.handle((value, sink) -> {
 					if (value % 2 == 0) {
 						sink.next(value);
 					}
