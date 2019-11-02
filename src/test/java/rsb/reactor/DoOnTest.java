@@ -38,8 +38,11 @@ public class DoOnTest {
 				.doOnError(IllegalArgumentException.class, exceptions::add)//
 				.doFinally(finallySignals::add);
 
-		StepVerifier.create(on).expectNext(1, 2, 3)
-				.expectError(IllegalArgumentException.class).verify();
+		StepVerifier//
+				.create(on)//
+				.expectNext(1, 2, 3)//
+				.expectError(IllegalArgumentException.class)//
+				.verify();
 
 		signals.forEach(log::info);
 		Assert.assertEquals(4, signals.size());
