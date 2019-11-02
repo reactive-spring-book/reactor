@@ -14,8 +14,7 @@ public class HandleTest {
 		Flux<Integer> values = Flux//
 				.range(0, 7)//
 				.handle((value, sink) -> {
-					if (value == 6) { // trigger completion on the receipt of a special
-										// message
+					if (value == 6) { // trigger completion
 						sink.complete();
 						return;
 					}
