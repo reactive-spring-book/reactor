@@ -1,8 +1,6 @@
 package rsb.reactor;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
@@ -20,10 +18,12 @@ public class AsyncApiIntegrationTest {
 
 	@Test
 	public void async() {
-		Flux<Integer> integers = Flux.create(emitter -> this.launch(emitter, 5));
+		Flux<Integer> integers = Flux//
+				.create(emitter -> this.launch(emitter, 5));
 		StepVerifier
 				.create(integers.doFinally(signalType -> this.executorService.shutdown()))
-				.expectNextCount(5).verifyComplete();
+				.expectNextCount(5)//
+				.verifyComplete();
 	}
 
 	// NB: you need to setup whatever connections with an external API ONLy after you're
