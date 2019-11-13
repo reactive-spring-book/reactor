@@ -22,6 +22,10 @@ public class ConcatMapTest {
 				.verifyComplete();
 	}
 
+	private Flux<Integer> delayReplyFor(Integer i, long delay) {
+		return Flux.just(i).delayElements(Duration.ofMillis(delay));
+	}
+
 	@AllArgsConstructor
 	static class Pair {
 
@@ -29,10 +33,6 @@ public class ConcatMapTest {
 
 		private long delay;
 
-	}
-
-	private Flux<Integer> delayReplyFor(Integer i, long delay) {
-		return Flux.just(i).delayElements(Duration.ofMillis(delay));
 	}
 
 }

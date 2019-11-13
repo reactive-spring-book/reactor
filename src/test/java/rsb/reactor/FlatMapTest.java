@@ -23,6 +23,10 @@ public class FlatMapTest {
 				.verifyComplete();
 	}
 
+	private Flux<Integer> delayReplyFor(Integer i, long delay) {
+		return Flux.just(i).delayElements(Duration.ofMillis(delay));
+	}
+
 	@AllArgsConstructor
 	static class Pair {
 
@@ -30,10 +34,6 @@ public class FlatMapTest {
 
 		private long delay;
 
-	}
-
-	private Flux<Integer> delayReplyFor(Integer i, long delay) {
-		return Flux.just(i).delayElements(Duration.ofMillis(delay));
 	}
 
 }
