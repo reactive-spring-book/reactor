@@ -11,18 +11,13 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Log4j2
 public class SchedulersExecutorServiceDecoratorsTest {
 
-	private final AtomicInteger scheduleCounts = new AtomicInteger();
-
-	private final AtomicReference<ScheduledExecutorService> cached = new AtomicReference<>();
+	private final AtomicInteger methodInvocationCounts = new AtomicInteger();
 
 	private String rsb = "rsb";
 
@@ -36,7 +31,7 @@ public class SchedulersExecutorServiceDecoratorsTest {
 				.subscribeOn(scheduler);
 		StepVerifier.create(integerFlux).thenAwait(Duration.ofMillis(10))
 				.expectNextCount(1).verifyComplete();
-		Assert.assertEquals(1, this.scheduleCounts.get());
+		Assert.assertEquals(1, this.methodInvocationCounts.get());
 		Schedulers.resetFactory();
 	}
 
@@ -46,7 +41,7 @@ public class SchedulersExecutorServiceDecoratorsTest {
 			pfb.setProxyInterfaces(new Class[] { ScheduledExecutorService.class });
 			pfb.addAdvice((MethodInterceptor) methodInvocation -> {
 				var methodName = methodInvocation.getMethod().getName().toLowerCase();
-				this.scheduleCounts.incrementAndGet();
+				this.methodInvocationCounts.incrementAndGet();
 				log.info("methodName: (" + methodName + ") incrementing...");
 				return methodInvocation.proceed();
 			});
