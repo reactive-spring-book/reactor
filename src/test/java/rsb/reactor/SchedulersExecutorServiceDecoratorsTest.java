@@ -26,13 +26,14 @@ public class SchedulersExecutorServiceDecoratorsTest {
 		Schedulers.resetFactory();
 		Schedulers.addExecutorServiceDecorator(this.rsb, (scheduler,
 				scheduledExecutorService) -> this.decorate(scheduledExecutorService));
-		Scheduler scheduler = Schedulers.immediate();
-		Flux<Integer> integerFlux = Flux.just(1).delayElements(Duration.ofMillis(1))
-				.subscribeOn(scheduler);
+		// Scheduler scheduler = Schedulers.elastic();
+		Flux<Integer> integerFlux = Flux.just(1).delayElements(Duration.ofMillis(1));
+		// .subscribeOn(scheduler);
 		StepVerifier.create(integerFlux).thenAwait(Duration.ofMillis(10))
 				.expectNextCount(1).verifyComplete();
 		Assert.assertEquals(1, this.methodInvocationCounts.get());
 		Schedulers.resetFactory();
+		Schedulers.removeExecutorServiceDecorator(this.rsb);
 	}
 
 	private ScheduledExecutorService decorate(ScheduledExecutorService executorService) {
