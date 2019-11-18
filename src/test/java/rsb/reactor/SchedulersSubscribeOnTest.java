@@ -10,6 +10,7 @@ import reactor.test.StepVerifier;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Log4j2
@@ -17,7 +18,7 @@ public class SchedulersSubscribeOnTest {
 
 	@Test
 	public void subscribeOn() {
-		var rsbThreadName = "rsb";
+		var rsbThreadName = SchedulersSubscribeOnTest.class.getName();
 		var map = new ConcurrentHashMap<String, AtomicInteger>();
 		var executor = Executors.newFixedThreadPool(5, runnable -> {
 			Runnable wrapper = () -> {
