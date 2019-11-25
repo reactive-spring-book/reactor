@@ -6,7 +6,6 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Log4j2
 public class ControlFlowFirstTest {

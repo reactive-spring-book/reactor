@@ -2,10 +2,8 @@ package rsb.reactor;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.scheduling.annotation.Scheduled;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.FluxSink;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
