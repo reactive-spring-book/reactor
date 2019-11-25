@@ -12,7 +12,7 @@ public class ControlFlowRetryTest {
 
 	@Test
 	public void retry() {
-		AtomicBoolean errored = new AtomicBoolean();
+		var errored = new AtomicBoolean();
 		// can we make retry() work? how do we demo it?
 		Flux<String> producer = Flux.create(sink -> {
 			if (!errored.get()) {
