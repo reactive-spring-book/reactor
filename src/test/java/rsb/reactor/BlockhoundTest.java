@@ -9,8 +9,11 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
-
+// NB: if you want to run this on Java 13 in your IDE, make sure to add
+// -XX:+AllowRedefinitionToAddDeleteMethods
+// to the "VM Options"
+// the Maven build already handles this for you
+//
 @Log4j2
 public class BlockhoundTest {
 
@@ -21,27 +24,27 @@ public class BlockhoundTest {
 
 	@Test
 	public void notOk() {
-		StepVerifier.create(this.buildBlockingMono().subscribeOn(Schedulers.parallel()))
-				.expectErrorMatches(e -> {
-					e.printStackTrace();
-					return e instanceof Error
-							&& e.getMessage().contains("Blocking call!");
-				}).verify();
+		StepVerifier//
+				.create(this.buildBlockingMono().subscribeOn(Schedulers.parallel())) //
+				.expectErrorMatches(e -> e instanceof Error
+						&& e.getMessage().contains("Blocking call!"))//
+				.verify();
 	}
 
 	@Test
 	public void ok() {
-		StepVerifier.create(this.buildBlockingMono().subscribeOn(Schedulers.elastic())) //
+		StepVerifier//
+				.create(this.buildBlockingMono().subscribeOn(Schedulers.elastic())) //
 				.expectNext(1L)//
 				.verifyComplete();
 	}
 
-	private Mono<Long> buildBlockingMono() {
+	Mono<Long> buildBlockingMono() {
 		return Mono.just(1L).doOnNext(it -> block());
 	}
 
 	@SneakyThrows
-	private void block() {
+	void block() {
 		Thread.sleep(1000);
 	}
 
