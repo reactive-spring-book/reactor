@@ -14,6 +14,15 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>io.projectreactor.tools</groupId>
+            <artifactId>blockhound</artifactId>
+            <version>1.0.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-tools</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
@@ -33,8 +42,28 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <profiles>
 
+        <profile>
+            <id>blockhound-java-13</id>
+            <activation>
+                <jdk>[13,)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <argLine>-XX:+AllowRedefinitionToAddDeleteMethods</argLine>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
