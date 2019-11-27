@@ -34,7 +34,6 @@ public class BlockhoundTest {
 		BLOCKHOUND.set(true);
 		var integrations = new ArrayList<BlockHoundIntegration>();
 		var services = ServiceLoader.load(BlockHoundIntegration.class);
-
 		services.forEach(integrations::add);
 
 		integrations.add(builder -> builder.blockingMethodCallback(blockingMethod -> {
