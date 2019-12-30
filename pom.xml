@@ -48,6 +48,7 @@
         </dependency>
     </dependencies>
     <profiles>
+        <!-- tag::blockhound-java-13[] -->
 
         <profile>
             <id>blockhound-java-13</id>
@@ -66,6 +67,7 @@
                 </plugins>
             </build>
         </profile>
+        <!-- end::blockhound-java-13[] -->
     </profiles>
     <build>
 

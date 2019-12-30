@@ -19,7 +19,7 @@ import java.util.stream.StreamSupport;
 import static reactor.blockhound.BlockHound.builder;
 
 // NB: if you want to run this on Java 13 in your IDE, make sure to add
-// -XX:+AllowRedefinitionToAddDeleteMethods
+//
 // to the "VM Options"
 // the Maven build already handles this for you
 //

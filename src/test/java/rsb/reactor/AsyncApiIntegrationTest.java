@@ -26,7 +26,7 @@ public class AsyncApiIntegrationTest {
 				.verifyComplete();
 	}
 
-	// NB: you need to setup whatever connections with an external API ONLy after you're
+	// NB: you need to setup whatever connections with an external API ONLY after you're
 	// inside the callback
 	private void launch(FluxSink<Integer> integerFluxSink, int count) {
 		this.executorService.submit(() -> {
