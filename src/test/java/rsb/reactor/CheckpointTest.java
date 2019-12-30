@@ -7,7 +7,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
@@ -17,16 +16,21 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CheckpointTest {
 
 	@Test
-	public void checkpoint() throws Exception {
+	public void checkpoint() {
 
 		var stackTrace = new AtomicReference<String>();
-		var checkpoint = Flux.just("A", "B", "C", "D").map(String::toLowerCase)
+
+		var checkpoint = Flux.just("A", "B", "C", "D")//
+				.map(String::toLowerCase)//
 				.flatMapSequential(letter -> {
 					if (letter.equals("c")) { // induce the error
 						return Mono.error(new IllegalArgumentException("Ooops!"));
 					}
 					return Flux.just(letter);
-				}).checkpoint().delayElements(Duration.ofMillis(1));
+				}) //
+				.checkpoint() //
+				.delayElements(Duration.ofMillis(1));
+
 		StepVerifier //
 				.create(checkpoint) //
 				.expectNext("a", "b") //
