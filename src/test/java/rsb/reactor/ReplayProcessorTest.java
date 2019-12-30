@@ -10,7 +10,10 @@ public class ReplayProcessorTest {
 
 	@Test
 	public void replayProcessor() {
-		ReplayProcessor<String> processor = ReplayProcessor.create(2, false); // <1>
+		int historySize = 2;
+		boolean unbounded = false;
+		ReplayProcessor<String> processor = ReplayProcessor.create(historySize,
+				unbounded); // <1>
 		produce(processor.sink());
 		consume(processor);
 	}
