@@ -20,20 +20,25 @@ public class HooksOnOperatorDebugTest {
 	public void onOperatorDebug() throws Exception {
 		Hooks.onOperatorDebug();
 		var stackTrace = new AtomicReference<String>();
-		var errorFlux = Flux.just("A", "B", "C", "D").map(String::toLowerCase)
+		var errorFlux = Flux//
+				.just("a", "b", "c", "d")//
 				.flatMapSequential(letter -> {
 					if (letter.equals("c")) { // induce the error
 						return Mono.error(new IllegalArgumentException("Ooops!"));
 					}
 					return Flux.just(letter);
-				}).checkpoint().delayElements(Duration.ofMillis(1));
+				})//
+				.checkpoint()//
+				.delayElements(Duration.ofMillis(1));
+
 		StepVerifier //
 				.create(errorFlux) //
 				.expectNext("a", "b") //
-				.expectErrorMatches(ex -> {
+				.expectErrorMatches(ex -> {//
 					stackTrace.set(stackTraceToString(ex));
 					return ex instanceof IllegalArgumentException;
-				}).verify();
+				})//
+				.verify();
 		Assert.assertTrue(stackTrace.get()
 				.contains("Mono.error ⇢ at " + HooksOnOperatorDebugTest.class.getName()));
 	}
