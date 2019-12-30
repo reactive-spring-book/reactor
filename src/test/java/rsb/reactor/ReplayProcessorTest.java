@@ -24,7 +24,8 @@ public class ReplayProcessorTest {
 
 	private void consume(Flux<String> publisher) {
 		for (int i = 0; i < 5; i++)
-			StepVerifier.create(publisher)//
+			StepVerifier//
+					.create(publisher)//
 					.expectNext("2")//
 					.expectNext("3")//
 					.verifyComplete();
