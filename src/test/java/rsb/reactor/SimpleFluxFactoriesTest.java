@@ -17,26 +17,32 @@ public class SimpleFluxFactoriesTest {
 	@Test
 	public void simple() {
 
+		// <1>
 		Publisher<Integer> rangeOfIntegers = Flux.range(0, 10);
 		StepVerifier.create(rangeOfIntegers).expectNextCount(10).verifyComplete();
 
+		// <2>
 		Flux<String> letters = Flux.just("A", "B", "C");
 		StepVerifier.create(letters).expectNext("A", "B", "C").verifyComplete();
 
+		// <3>
 		long now = System.currentTimeMillis();
 		Mono<Date> greetingMono = Mono.just(new Date(now));
 		StepVerifier.create(greetingMono).expectNext(new Date(now)).verifyComplete();
 
+		// <4>
 		Mono<Object> empty = Mono.empty();
 		StepVerifier.create(empty).verifyComplete();
 
+		// <5>
 		Flux<Integer> fromArray = Flux.fromArray(new Integer[] { 1, 2, 3 });
 		StepVerifier.create(fromArray).expectNext(1, 2, 3).verifyComplete();
 
+		// <6>
 		Flux<Integer> fromIterable = Flux.fromIterable(Arrays.asList(1, 2, 3));
 		StepVerifier.create(fromIterable).expectNext(1, 2, 3).verifyComplete();
 
-		//
+		// <7>
 		AtomicInteger integer = new AtomicInteger();
 		Supplier<Integer> supplier = integer::incrementAndGet;
 		Flux<Integer> integerFlux = Flux.fromStream(Stream.generate(supplier));

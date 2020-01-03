@@ -28,7 +28,7 @@ public class HandleTest {
 
 	Flux<Integer> handle(int max, int numberToError) {
 		return Flux//
-				.range(0, max) //
+				.range(0, max) // <1>
 				.handle((value, sink) -> {
 					var upTo = Stream.iterate(0, i -> i < numberToError, i -> i + 1)
 							.collect(Collectors.toList());

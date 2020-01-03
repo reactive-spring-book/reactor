@@ -15,7 +15,7 @@ public class FlatMapTest {
 	public void flatMap() {
 
 		Flux<Integer> data = Flux
-				.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))//
+				.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))// <1>
 				.flatMap(id -> this.delayReplyFor(id.id, id.delay));
 		StepVerifier//
 				.create(data)//

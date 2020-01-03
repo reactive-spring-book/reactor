@@ -25,9 +25,7 @@ public class HotStreamTest3 {
 	public void publish() throws Exception {
 
 		Flux<Integer> pileOn = Flux.just(1, 2, 3).publish().autoConnect(3)
-				.subscribeOn(Schedulers.immediate()); // force the subscription on the
-														// same thread so we can observe
-														// the interactions
+				.subscribeOn(Schedulers.immediate()); // <1>
 
 		pileOn.subscribe(subscribe(one));
 		Assert.assertEquals(this.one.size(), 0);

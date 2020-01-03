@@ -28,7 +28,7 @@ public class HotStreamTest1 {
 		sink.next(3);
 		sink.complete();
 
-		Assert.assertTrue(first.size() > second.size());
+		Assert.assertTrue(first.size() > second.size());// <1>
 	}
 
 	Consumer<Integer> collect(List<Integer> collection) {

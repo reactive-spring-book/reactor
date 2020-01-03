@@ -13,9 +13,8 @@ public class TransformTest {
 	public void transform() {
 		var finished = new AtomicBoolean();
 		var letters = Flux//
-				.just("A", "B", "C")//
-				.transform(
-						stringFlux -> stringFlux.doFinally(signal -> finished.set(true)));
+				.just("A", "B", "C").transform(
+						stringFlux -> stringFlux.doFinally(signal -> finished.set(true)));// <1>
 		StepVerifier.create(letters).expectNextCount(3).verifyComplete();
 		Assert.assertTrue("the finished Boolean must be true.", finished.get());
 	}

@@ -13,6 +13,7 @@ public class FlowAndReactiveStreamsTest {
 
 	@Test
 	public void convert() {
+		// <1>
 		Flux<Integer> original = Flux.range(0, 10);
 
 		Flow.Publisher<Integer> rangeOfIntegersAsJdk9Flow = FlowAdapters
@@ -25,7 +26,7 @@ public class FlowAndReactiveStreamsTest {
 		StepVerifier.create(rangeOfIntegersAsReactiveStream).expectNextCount(10)
 				.verifyComplete();
 
-		//
+		// <2>
 		Flux<Integer> rangeOfIntegersAsReactorFluxAgain = JdkFlowAdapter
 				.flowPublisherToFlux(rangeOfIntegersAsJdk9Flow);
 		StepVerifier.create(rangeOfIntegersAsReactorFluxAgain).expectNextCount(10)

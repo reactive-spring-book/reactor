@@ -28,9 +28,9 @@ public class SchedulersSubscribeOnTest {
 			};
 			return new Thread(wrapper, rsbThreadName);
 		});
-		Scheduler scheduler = Schedulers.fromExecutor(executor);
+		Scheduler scheduler = Schedulers.fromExecutor(executor); // <1>
 		Mono<Integer> integerFlux = Mono.just(1).subscribeOn(scheduler)
-				.doFinally(signal -> map.forEach((k, v) -> log.info(k + '=' + v)));
+				.doFinally(signal -> map.forEach((k, v) -> log.info(k + '=' + v)));// <2>
 		StepVerifier.create(integerFlux).expectNextCount(1).verifyComplete();
 		var atomicInteger = map.get(rsbThreadName);
 		Assert.assertEquals(atomicInteger.get(), 1);

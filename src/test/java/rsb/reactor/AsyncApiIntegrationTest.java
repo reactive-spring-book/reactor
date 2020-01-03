@@ -18,26 +18,26 @@ public class AsyncApiIntegrationTest {
 
 	@Test
 	public void async() {
-		Flux<Integer> integers = Flux//
-				.create(emitter -> this.launch(emitter, 5));
+		// <1>
+		Flux<Integer> integers = Flux.create(emitter -> this.launch(emitter, 5));
+		// <2>
 		StepVerifier
 				.create(integers.doFinally(signalType -> this.executorService.shutdown()))
 				.expectNextCount(5)//
 				.verifyComplete();
 	}
 
-	// NB: you need to setup whatever connections with an external API ONLY after you're
-	// inside the callback
+	// <3>
 	private void launch(FluxSink<Integer> integerFluxSink, int count) {
 		this.executorService.submit(() -> {
-			AtomicInteger integer = new AtomicInteger();
+			var integer = new AtomicInteger();
 			Assert.assertNotNull(integerFluxSink);
 			while (integer.get() < count) {
 				double random = Math.random();
-				integerFluxSink.next(integer.incrementAndGet());
+				integerFluxSink.next(integer.incrementAndGet());// <4>
 				this.sleep((long) (random * 1_000));
 			}
-			integerFluxSink.complete();
+			integerFluxSink.complete(); // <5>
 		});
 	}
 

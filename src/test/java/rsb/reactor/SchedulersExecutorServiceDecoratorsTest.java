@@ -24,7 +24,9 @@ public class SchedulersExecutorServiceDecoratorsTest {
 
 	@Before
 	public void before() {
+		// <1>
 		Schedulers.resetFactory();
+		// <2>
 		Schedulers.addExecutorServiceDecorator(this.rsb, (scheduler,
 				scheduledExecutorService) -> this.decorate(scheduledExecutorService));
 	}

@@ -18,6 +18,7 @@ public class ReplayProcessorTest {
 		consume(processor);
 	}
 
+	// <2>
 	private void produce(FluxSink<String> sink) {
 		sink.next("1");
 		sink.next("2");
@@ -25,6 +26,7 @@ public class ReplayProcessorTest {
 		sink.complete();
 	}
 
+	// <3>
 	private void consume(Flux<String> publisher) {
 		for (int i = 0; i < 5; i++)
 			StepVerifier//

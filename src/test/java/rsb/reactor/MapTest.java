@@ -10,7 +10,6 @@ public class MapTest {
 	public void maps() {
 		var data = Flux.just("a", "b", "c").map(String::toUpperCase);
 		StepVerifier.create(data).expectNext("A", "B", "C").verifyComplete();
-
 	}
 
 }
