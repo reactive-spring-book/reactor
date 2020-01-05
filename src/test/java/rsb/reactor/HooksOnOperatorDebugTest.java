@@ -17,30 +17,23 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HooksOnOperatorDebugTest {
 
 	@Test
-	public void onOperatorDebug() throws Exception {
+	public void onOperatorDebug() {
 		Hooks.onOperatorDebug();
 		var stackTrace = new AtomicReference<String>();
 		var errorFlux = Flux//
-				.just("a", "b", "c", "d")//
-				.flatMapSequential(letter -> {
-					if (letter.equals("c")) { // induce the error
-						return Mono.error(new IllegalArgumentException("Ooops!"));
-					}
-					return Flux.just(letter);
-				})//
+				.error(new IllegalArgumentException("Oops!"))//
 				.checkpoint()//
 				.delayElements(Duration.ofMillis(1));
 
 		StepVerifier //
 				.create(errorFlux) //
-				.expectNext("a", "b") //
 				.expectErrorMatches(ex -> {//
 					stackTrace.set(stackTraceToString(ex));
 					return ex instanceof IllegalArgumentException;
 				})//
 				.verify();
 		Assert.assertTrue(stackTrace.get()
-				.contains("Mono.error ⇢ at " + HooksOnOperatorDebugTest.class.getName()));
+				.contains("Flux.error ⇢ at " + HooksOnOperatorDebugTest.class.getName()));
 	}
 
 	private static String stackTraceToString(Throwable throwable) {
