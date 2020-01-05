@@ -20,26 +20,19 @@ public class CheckpointTest {
 
 		var stackTrace = new AtomicReference<String>();
 
-		var checkpoint = Flux.just("A", "B", "C", "D")//
-				.map(String::toLowerCase)//
-				.flatMapSequential(letter -> {
-					if (letter.equals("c")) { // induce the error
-						return Mono.error(new IllegalArgumentException("Ooops!"));
-					}
-					return Flux.just(letter);
-				}) //
-				.checkpoint() //
+		var checkpoint = Flux//
+				.error(new IllegalArgumentException("Oops!")).checkpoint() //
 				.delayElements(Duration.ofMillis(1));
 
 		StepVerifier //
 				.create(checkpoint) //
-				.expectNext("a", "b") //
 				.expectErrorMatches(ex -> {
 					stackTrace.set(stackTraceToString(ex));
 					return ex instanceof IllegalArgumentException;
-				}).verify();
+				})//
+				.verify();
 
-		Assert.assertTrue(stackTrace.get()
+		Assert.assertTrue(stackTrace.get()//
 				.contains("Error has been observed at the following site(s):"));
 	}
 
