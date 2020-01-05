@@ -21,12 +21,14 @@
             <version>1.0.1.RELEASE</version>
         </dependency>
         <!-- end::reactor-blockhound[] -->
+
         <!-- tag::reactor-tools-dependency[] -->
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-tools</artifactId>
         </dependency>
         <!-- end::reactor-tools-dependency[] -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
