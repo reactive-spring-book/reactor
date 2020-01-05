@@ -26,7 +26,7 @@ public class ContextTest {
 		Flux<Integer> just = Flux//
 				.range(0, max)//
 				.delayElements(Duration.ofMillis(1))//
-				.doOnEach((Signal<Integer> integerSignal) -> { //<1>
+				.doOnEach((Signal<Integer> integerSignal) -> { // <1>
 					Context currentContext = integerSignal.getContext();
 					if (integerSignal.getType().equals(SignalType.ON_NEXT)) {
 						String key1 = currentContext.get(key);
