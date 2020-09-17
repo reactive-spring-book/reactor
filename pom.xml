@@ -127,16 +127,14 @@
             </snapshots>
             <id>central</id>
             <name>libs-release</name>
-            <url>
-                                                                     https://cloudnativejava.jfrog.io/cloudnativejava/libs-release
+            <url>  https://cloudnativejava.jfrog.io/cloudnativejava/libs-release
             </url>
         </repository>
         <repository>
             <snapshots/>
             <id>snapshots</id>
             <name>libs-snapshot</name>
-            <url>
-                                                                     https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot
+            <url>           https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot
             </url>
         </repository>
     </repositories>
@@ -147,8 +145,7 @@
             </snapshots>
             <id>central</id>
             <name>plugins-release</name>
-            <url>
-                                                     https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
+            <url>        https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
             </url>
         </pluginRepository>
         <pluginRepository>
