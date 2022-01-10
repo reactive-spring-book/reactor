@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -e
 cd $GITHUB_WORKSPACE 
 
 echo "Starting build"
