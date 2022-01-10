@@ -18,7 +18,7 @@ public class HotStreamTest2 {
 
 	@Test
 	public void hot() throws Exception {
-		int factor = 10;
+		var factor = 10;
 		log.info("start");
 		var cdl = new CountDownLatch(2);
 		Flux<Integer> live = Flux.range(0, 10).delayElements(Duration.ofMillis(factor)).share();

@@ -9,10 +9,10 @@
 <script lang="text/javascript">
 
     // <1>
-    var socket = new WebSocket('ws://localhost:8080/ws/profiles');
+    const socket = new WebSocket('ws://localhost:8080/ws/profiles');
 
     // <2>
-    socket.addEventListener('message', function (event) {
+    socket.addEventListener('message', (event) => {
       window.alert('message from server: ' + event.data);
     });
 
