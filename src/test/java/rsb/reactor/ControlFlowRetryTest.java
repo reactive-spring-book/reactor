@@ -1,21 +1,20 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-import reactor.tools.agent.ReactorDebugAgent;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Log4j2
+@Slf4j
 public class ControlFlowRetryTest {
 
 	@Test
 	public void retry() {
 
 		var errored = new AtomicBoolean();
-		Flux<String> producer = Flux.create(sink -> {
+		var producer = Flux.<String>create(sink -> {
 			if (!errored.get()) {
 				errored.set(true);
 				sink.error(new RuntimeException("Nope!"));
@@ -27,8 +26,7 @@ public class ControlFlowRetryTest {
 			}
 			sink.complete();
 		});
-
-		Flux<String> retryOnError = producer.retry();
+		var retryOnError = producer.retry();
 		StepVerifier.create(retryOnError).expectNext("hello").verifyComplete();
 	}
 

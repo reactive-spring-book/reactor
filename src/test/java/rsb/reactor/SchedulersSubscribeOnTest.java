@@ -1,10 +1,9 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j2
+@Slf4j
 public class SchedulersSubscribeOnTest {
 
 	@Test
@@ -28,12 +27,12 @@ public class SchedulersSubscribeOnTest {
 			};
 			return new Thread(wrapper, rsbThreadName);
 		});
-		Scheduler scheduler = Schedulers.fromExecutor(executor); // <1>
-		Mono<Integer> integerFlux = Mono.just(1).subscribeOn(scheduler)
+		var scheduler = Schedulers.fromExecutor(executor); // <1>
+		var integerFlux = Mono.just(1).subscribeOn(scheduler)
 				.doFinally(signal -> map.forEach((k, v) -> log.info(k + '=' + v)));// <2>
 		StepVerifier.create(integerFlux).expectNextCount(1).verifyComplete();
 		var atomicInteger = map.get(rsbThreadName);
-		Assert.assertEquals(atomicInteger.get(), 1);
+		Assertions.assertEquals(atomicInteger.get(), 1);
 	}
 
 }

@@ -1,6 +1,6 @@
 package rsb.reactor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
@@ -12,8 +12,7 @@ public class ReplayProcessorTest {
 	public void replayProcessor() {
 		int historySize = 2;
 		boolean unbounded = false;
-		ReplayProcessor<String> processor = ReplayProcessor.create(historySize,
-				unbounded); // <1>
+		ReplayProcessor<String> processor = ReplayProcessor.create(historySize, unbounded); // <1>
 		produce(processor.sink());
 		consume(processor);
 	}

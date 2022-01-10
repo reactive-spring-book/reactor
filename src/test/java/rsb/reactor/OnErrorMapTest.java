@@ -1,7 +1,7 @@
 package rsb.reactor;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -20,7 +20,7 @@ public class OnErrorMapTest {
 				.onErrorMap(IllegalArgumentException.class, ex -> new GenericException())
 				.doOnError(GenericException.class, ge -> counter.incrementAndGet());
 		StepVerifier.create(errorHandlingStream).expectError().verify();
-		Assert.assertEquals(counter.get(), 1);
+		Assertions.assertEquals(counter.get(), 1);
 	}
 
 }

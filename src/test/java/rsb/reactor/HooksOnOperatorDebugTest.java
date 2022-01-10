@@ -1,11 +1,10 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.PrintWriter;
@@ -13,7 +12,7 @@ import java.io.StringWriter;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Log4j2
+@Slf4j
 public class HooksOnOperatorDebugTest {
 
 	@Test
@@ -32,8 +31,7 @@ public class HooksOnOperatorDebugTest {
 					return ex instanceof IllegalArgumentException;
 				})//
 				.verify();
-		Assert.assertTrue(stackTrace.get()
-				.contains("Flux.error ⇢ at " + HooksOnOperatorDebugTest.class.getName()));
+		Assertions.assertTrue(stackTrace.get().contains("Flux.error ⇢ at " + HooksOnOperatorDebugTest.class.getName()));
 	}
 
 	private static String stackTraceToString(Throwable throwable) {

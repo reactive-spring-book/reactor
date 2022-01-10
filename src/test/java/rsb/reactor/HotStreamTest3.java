@@ -1,7 +1,7 @@
 package rsb.reactor;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -24,19 +24,18 @@ public class HotStreamTest3 {
 	@Test
 	public void publish() throws Exception {
 
-		Flux<Integer> pileOn = Flux.just(1, 2, 3).publish().autoConnect(3)
-				.subscribeOn(Schedulers.immediate()); // <1>
+		Flux<Integer> pileOn = Flux.just(1, 2, 3).publish().autoConnect(3).subscribeOn(Schedulers.immediate()); // <1>
 
 		pileOn.subscribe(subscribe(one));
-		Assert.assertEquals(this.one.size(), 0);
+		Assertions.assertEquals(this.one.size(), 0);
 
 		pileOn.subscribe(subscribe(two));
-		Assert.assertEquals(this.two.size(), 0);
+		Assertions.assertEquals(this.two.size(), 0);
 
 		pileOn.subscribe(subscribe(three));
-		Assert.assertEquals(this.three.size(), 3);
-		Assert.assertEquals(this.two.size(), 3);
-		Assert.assertEquals(this.three.size(), 3);
+		Assertions.assertEquals(this.three.size(), 3);
+		Assertions.assertEquals(this.two.size(), 3);
+		Assertions.assertEquals(this.three.size(), 3);
 	}
 
 }

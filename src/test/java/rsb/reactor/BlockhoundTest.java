@@ -1,8 +1,10 @@
 package rsb.reactor;
 
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
-import org.junit.*;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import reactor.blockhound.BlockHound;
 import reactor.blockhound.integration.BlockHoundIntegration;
 import reactor.core.publisher.Mono;
@@ -10,25 +12,15 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ServiceLoader;
-import java.util.Spliterator;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.StreamSupport;
 
-import static reactor.blockhound.BlockHound.builder;
-
-// NB: if you want to run this on Java 13 in your IDE, make sure to add
-//
-// to the "VM Options"
-// the Maven build already handles this for you
-//
-@Log4j2
+@Slf4j
 public class BlockhoundTest {
 
 	private final static AtomicBoolean BLOCKHOUND = new AtomicBoolean();
 
-	@Before
+	@BeforeEach
 	public void before() {
 
 		BLOCKHOUND.set(true);
@@ -53,7 +45,7 @@ public class BlockhoundTest {
 
 	}
 
-	@After
+	@AfterEach
 	public void after() {
 		BLOCKHOUND.set(false);
 	}
@@ -62,19 +54,14 @@ public class BlockhoundTest {
 	public void notOk() {
 		StepVerifier//
 				.create(this.buildBlockingMono().subscribeOn(Schedulers.parallel())) //
-				.expectErrorMatches(e -> e instanceof BlockingCallError/*
-																		 * &&
-																		 * e.getMessage().
-																		 * contains("Blocking call!"
-																		 * )
-																		 */)//
+				.expectErrorMatches(e -> e instanceof BlockingCallError)//
 				.verify();
 	}
 
 	@Test
 	public void ok() {
 		StepVerifier//
-				.create(this.buildBlockingMono().subscribeOn(Schedulers.elastic())) //
+				.create(this.buildBlockingMono().subscribeOn(Schedulers.boundedElastic())) //
 				.expectNext(1L)//
 				.verifyComplete();
 	}

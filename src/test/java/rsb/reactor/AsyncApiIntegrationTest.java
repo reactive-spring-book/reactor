@@ -1,8 +1,8 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j2
+@Slf4j
 public class AsyncApiIntegrationTest {
 
 	private final ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -19,11 +19,9 @@ public class AsyncApiIntegrationTest {
 	@Test
 	public void async() {
 		// <1>
-		Flux<Integer> integers = Flux.create(emitter -> this.launch(emitter, 5));
+		var integers = Flux.<Integer>create(emitter -> this.launch(emitter, 5));
 		// <2>
-		StepVerifier
-				.create(integers.doFinally(signalType -> this.executorService.shutdown()))
-				.expectNextCount(5)//
+		StepVerifier.create(integers.doFinally(signalType -> this.executorService.shutdown())).expectNextCount(5)//
 				.verifyComplete();
 	}
 
@@ -31,9 +29,9 @@ public class AsyncApiIntegrationTest {
 	private void launch(FluxSink<Integer> integerFluxSink, int count) {
 		this.executorService.submit(() -> {
 			var integer = new AtomicInteger();
-			Assert.assertNotNull(integerFluxSink);
+			Assertions.assertNotNull(integerFluxSink);
 			while (integer.get() < count) {
-				double random = Math.random();
+				var random = Math.random();
 				integerFluxSink.next(integer.incrementAndGet());// <4>
 				this.sleep((long) (random * 1_000));
 			}
@@ -44,9 +42,9 @@ public class AsyncApiIntegrationTest {
 	private void sleep(long s) {
 		try {
 			Thread.sleep(s);
-		}
+		} //
 		catch (Exception e) {
-			log.error(e);
+			log.error("something's wrong!", e);
 		}
 	}
 

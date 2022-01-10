@@ -1,7 +1,7 @@
 package rsb.reactor;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -13,10 +13,9 @@ public class TransformTest {
 	public void transform() {
 		var finished = new AtomicBoolean();
 		var letters = Flux//
-				.just("A", "B", "C").transform(
-						stringFlux -> stringFlux.doFinally(signal -> finished.set(true)));// <1>
+				.just("A", "B", "C").transform(stringFlux -> stringFlux.doFinally(signal -> finished.set(true)));// <1>
 		StepVerifier.create(letters).expectNextCount(3).verifyComplete();
-		Assert.assertTrue("the finished Boolean must be true.", finished.get());
+		Assertions.assertTrue(finished.get(), "the finished Boolean must be true.");
 	}
 
 }

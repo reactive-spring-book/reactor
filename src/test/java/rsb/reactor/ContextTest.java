@@ -1,8 +1,8 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Assert;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 import reactor.core.publisher.SignalType;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j2
+@Slf4j
 public class ContextTest {
 
 	@Test
@@ -22,19 +22,17 @@ public class ContextTest {
 		var max = 3;
 		var key = "key1";
 		var cdl = new CountDownLatch(max);
-		Context context = Context.of(key, "value1");
-		Flux<Integer> just = Flux//
+		var context = Context.of(key, "value1");
+		var just = Flux//
 				.range(0, max)//
 				.delayElements(Duration.ofMillis(1))//
 				.doOnEach((Signal<Integer> integerSignal) -> { // <1>
 					Context currentContext = integerSignal.getContext();
 					if (integerSignal.getType().equals(SignalType.ON_NEXT)) {
 						String key1 = currentContext.get(key);
-						Assert.assertNotNull(key1);
-						Assert.assertEquals(key1, "value1");
-						observedContextValues
-								.computeIfAbsent("key1", k -> new AtomicInteger(0))
-								.incrementAndGet();
+						Assertions.assertNotNull(key1);
+						Assertions.assertEquals(key1, "value1");
+						observedContextValues.computeIfAbsent("key1", k -> new AtomicInteger(0)).incrementAndGet();
 					}
 				})//
 				.subscriberContext(context);
@@ -45,7 +43,7 @@ public class ContextTest {
 
 		cdl.await();
 
-		Assert.assertEquals(observedContextValues.get(key).get(), max);
+		Assertions.assertEquals(observedContextValues.get(key).get(), max);
 
 	}
 

@@ -1,6 +1,6 @@
 package rsb.reactor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -10,7 +10,7 @@ public class SwitchMapTest {
 
 	@Test
 	public void switchMapWithLookaheads() {
-		Flux<String> source = Flux //
+		var source = Flux //
 				.just("re", "rea", "reac", "react", "reactive") //
 				.delayElements(Duration.ofMillis(100))//
 				.switchMap(this::lookup);
@@ -18,8 +18,7 @@ public class SwitchMapTest {
 	}
 
 	private Flux<String> lookup(String word) {
-		return Flux.just(word + " -> reactive")//
-				.delayElements(Duration.ofMillis(500));
+		return Flux.just(word + " -> reactive").delayElements(Duration.ofMillis(500));
 	}
 
 }

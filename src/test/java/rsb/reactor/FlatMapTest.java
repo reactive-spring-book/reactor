@@ -1,21 +1,19 @@
 package rsb.reactor;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
-@Log4j2
+@Slf4j
 public class FlatMapTest {
 
 	@Test
 	public void flatMap() {
 
-		Flux<Integer> data = Flux
-				.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))// <1>
+		var data = Flux.just(new Pair(1, 300), new Pair(2, 200), new Pair(3, 100))
 				.flatMap(id -> this.delayReplyFor(id.id, id.delay));
 		StepVerifier//
 				.create(data)//
@@ -27,13 +25,7 @@ public class FlatMapTest {
 		return Flux.just(i).delayElements(Duration.ofMillis(delay));
 	}
 
-	@AllArgsConstructor
-	static class Pair {
-
-		private int id;
-
-		private long delay;
-
+	private record Pair(int id, long delay) {
 	}
 
 }

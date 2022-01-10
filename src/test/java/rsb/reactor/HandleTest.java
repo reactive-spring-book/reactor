@@ -1,14 +1,14 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
-import org.junit.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Log4j2
+@Slf4j
 public class HandleTest {
 
 	@Test
@@ -30,8 +30,7 @@ public class HandleTest {
 		return Flux//
 				.range(0, max) // <1>
 				.handle((value, sink) -> {
-					var upTo = Stream.iterate(0, i -> i < numberToError, i -> i + 1)
-							.collect(Collectors.toList());
+					var upTo = Stream.iterate(0, i -> i < numberToError, i -> i + 1).collect(Collectors.toList());
 					if (upTo.contains(value)) {
 						sink.next(value);
 						return;

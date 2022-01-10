@@ -1,11 +1,11 @@
 package rsb.reactor;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -15,31 +15,30 @@ import java.time.Duration;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Log4j2
+@Slf4j
 public class SchedulersExecutorServiceDecoratorsTest {
 
 	private final AtomicInteger methodInvocationCounts = new AtomicInteger();
 
 	private String rsb = "rsb";
 
-	@Before
+	@BeforeEach
 	public void before() {
 		// <1>
 		Schedulers.resetFactory();
 		// <2>
-		Schedulers.addExecutorServiceDecorator(this.rsb, (scheduler,
-				scheduledExecutorService) -> this.decorate(scheduledExecutorService));
+		Schedulers.addExecutorServiceDecorator(this.rsb,
+				(scheduler, scheduledExecutorService) -> this.decorate(scheduledExecutorService));
 	}
 
 	@Test
 	public void changeDefaultDecorator() {
-		Flux<Integer> integerFlux = Flux.just(1).delayElements(Duration.ofMillis(1));
-		StepVerifier.create(integerFlux).thenAwait(Duration.ofMillis(10))
-				.expectNextCount(1).verifyComplete();
-		Assert.assertEquals(1, this.methodInvocationCounts.get());
+		var integerFlux = Flux.just(1).delayElements(Duration.ofMillis(1));
+		StepVerifier.create(integerFlux).thenAwait(Duration.ofMillis(10)).expectNextCount(1).verifyComplete();
+		Assertions.assertEquals(1, this.methodInvocationCounts.get());
 	}
 
-	@After
+	@AfterEach
 	public void after() {
 		Schedulers.resetFactory();
 		Schedulers.removeExecutorServiceDecorator(this.rsb);
@@ -60,7 +59,7 @@ public class SchedulersExecutorServiceDecoratorsTest {
 			return (ScheduledExecutorService) pfb.getObject();
 		}
 		catch (Exception e) {
-			log.error(e);
+			log.error("something went wrong!", e);
 		}
 		return null;
 	}
