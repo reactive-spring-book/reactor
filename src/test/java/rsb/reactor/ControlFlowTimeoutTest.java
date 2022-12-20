@@ -13,7 +13,7 @@ import java.util.concurrent.TimeoutException;
 public class ControlFlowTimeoutTest {
 
 	@Test
-	public void timeout() throws Exception {
+	public void timeout() {
 		var ids = Flux.just(1, 2, 3).delayElements(Duration.ofSeconds(1)).timeout(Duration.ofMillis(500))
 				.onErrorResume(this::given);
 		StepVerifier.create(ids).expectNext(0).verifyComplete();

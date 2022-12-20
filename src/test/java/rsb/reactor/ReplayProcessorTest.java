@@ -2,27 +2,25 @@ package rsb.reactor;
 
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
+// todo boot3
 public class ReplayProcessorTest {
 
 	@Test
 	public void replayProcessor() {
-		int historySize = 2;
-		boolean unbounded = false;
-		ReplayProcessor<String> processor = ReplayProcessor.create(historySize, unbounded); // <1>
-		produce(processor.sink());
-		consume(processor);
+		var historySize = 2;
+		var processor = Sinks.many().replay().<String>limit(historySize);
+		produce(processor);
+		consume(processor.asFlux());
 	}
 
 	// <2>
-	private void produce(FluxSink<String> sink) {
-		sink.next("1");
-		sink.next("2");
-		sink.next("3");
-		sink.complete();
+	private void produce(Sinks.Many<String> sink) {
+		for (var i = 0; i < 3; i++)
+			sink.tryEmitNext((i + 1) + "");
+		sink.tryEmitComplete();
 	}
 
 	// <3>

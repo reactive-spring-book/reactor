@@ -9,11 +9,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class OnErrorMapTest {
 
+	static class GenericException extends RuntimeException {
+
+	}
+
 	@Test
 	public void onErrorMap() throws Exception {
-		class GenericException extends RuntimeException {
 
-		}
 		var counter = new AtomicInteger();
 		Flux<Integer> resultsInError = Flux.error(new IllegalArgumentException("oops!"));
 		Flux<Integer> errorHandlingStream = resultsInError

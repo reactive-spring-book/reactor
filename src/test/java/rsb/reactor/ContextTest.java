@@ -27,7 +27,7 @@ public class ContextTest {
 				.range(0, max)//
 				.delayElements(Duration.ofMillis(1))//
 				.doOnEach((Signal<Integer> integerSignal) -> { // <1>
-					Context currentContext = integerSignal.getContext();
+					var currentContext = integerSignal.getContextView();
 					if (integerSignal.getType().equals(SignalType.ON_NEXT)) {
 						String key1 = currentContext.get(key);
 						Assertions.assertNotNull(key1);
@@ -35,7 +35,7 @@ public class ContextTest {
 						observedContextValues.computeIfAbsent("key1", k -> new AtomicInteger(0)).incrementAndGet();
 					}
 				})//
-				.subscriberContext(context);
+				.contextWrite(context);
 		just.subscribe(integer -> {
 			log.info("integer: " + integer);
 			cdl.countDown();

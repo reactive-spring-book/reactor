@@ -5,7 +5,7 @@
     <parent>
         <groupId>rsb</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <artifactId>reactor</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>io.projectreactor.tools</groupId>
             <artifactId>blockhound</artifactId>
-            <version>1.0.1.RELEASE</version>
+            <version>1.0.6.RELEASE</version>
         </dependency>
         <!-- end::reactor-blockhound[] -->
 
@@ -49,7 +49,6 @@
     </dependencies>
     <profiles>
         <!-- tag::blockhound-java-13[] -->
-
         <profile>
             <id>blockhound-java-13</id>
             <activation>
@@ -84,10 +83,6 @@
                             <goal>publish</goal>
                         </goals>
                         <configuration>
-                            <deployProperties>
-                                <build.vcsRevision>{{TRAVIS_COMMIT}}
-                                </build.vcsRevision>
-                            </deployProperties>
                             <publisher>
                                 <contextUrl> 
                                          https://cloudnativejava.jfrog.io/cloudnativejava
@@ -98,16 +93,6 @@
                                 <snapshotRepoKey>libs-snapshot-local
                                 </snapshotRepoKey>
                             </publisher>
-                            <buildInfo>
-                                <agentName>Travis CI</agentName>
-                                <buildNumber>{{TRAVIS_BUILD_NUMBER}}
-                                </buildNumber>
-                                <buildUrl>
-                                    http://travis-ci.org/{{TRAVIS_REPO_SLUG}}/builds/{{TRAVIS_BUILD_ID}}
-                                </buildUrl>
-                                <principal>{{USER}}</principal>
-                                <vcsRevision>{{TRAVIS_COMMIT}}</vcsRevision>
-                            </buildInfo>
                         </configuration>
                     </execution>
                 </executions>
@@ -125,14 +110,16 @@
             </snapshots>
             <id>central</id>
             <name>libs-release</name>
-            <url>  https://cloudnativejava.jfrog.io/cloudnativejava/libs-release
+            <url>
+                https://cloudnativejava.jfrog.io/cloudnativejava/libs-release
             </url>
         </repository>
         <repository>
             <snapshots/>
             <id>snapshots</id>
             <name>libs-snapshot</name>
-            <url>           https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot
+            <url>     
+              https://cloudnativejava.jfrog.io/cloudnativejava/libs-snapshot
             </url>
         </repository>
     </repositories>
@@ -143,7 +130,8 @@
             </snapshots>
             <id>central</id>
             <name>plugins-release</name>
-            <url>        https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
+            <url>      
+                  https://cloudnativejava.jfrog.io/cloudnativejava/plugins-release
             </url>
         </pluginRepository>
         <pluginRepository>

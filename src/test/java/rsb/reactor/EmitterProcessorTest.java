@@ -1,26 +1,25 @@
 package rsb.reactor;
 
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
+// todo boot3
 public class EmitterProcessorTest {
 
 	@Test
 	public void emitterProcessor() {
-		EmitterProcessor<String> processor = EmitterProcessor.create();// <1>
-		produce(processor.sink());
-		consume(processor);
+		var processor = Sinks.many().multicast().<String>onBackpressureBuffer();// <1>
+		produce(processor);
+		consume(processor.asFlux());
 	}
 
 	// <2>
-	private void produce(FluxSink<String> sink) {
-		sink.next("1");
-		sink.next("2");
-		sink.next("3");
-		sink.complete();
+	private void produce(Sinks.Many<String> sink) {
+		for (var i = 0; i < 3; i++)
+			sink.tryEmitNext((i + 1) + "");
+		sink.tryEmitComplete();
 	}
 
 	// <3>

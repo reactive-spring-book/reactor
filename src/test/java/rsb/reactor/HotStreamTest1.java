@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 public class HotStreamTest1 {
 
 	@Test
-	public void hot() throws Exception {
+	public void hot() {
 
 		var first = new ArrayList<Integer>();
 		var second = new ArrayList<Integer>();

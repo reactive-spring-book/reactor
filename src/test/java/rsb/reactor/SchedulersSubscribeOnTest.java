@@ -19,7 +19,7 @@ public class SchedulersSubscribeOnTest {
 		var rsbThreadName = SchedulersSubscribeOnTest.class.getName();
 		var map = new ConcurrentHashMap<String, AtomicInteger>();
 		var executor = Executors.newFixedThreadPool(5, runnable -> {
-			Runnable wrapper = () -> {
+			var wrapper = (Runnable) () -> {
 				var key = Thread.currentThread().getName();
 				var result = map.computeIfAbsent(key, s -> new AtomicInteger());
 				result.incrementAndGet();
