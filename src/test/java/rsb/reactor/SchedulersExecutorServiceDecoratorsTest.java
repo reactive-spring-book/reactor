@@ -18,9 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class SchedulersExecutorServiceDecoratorsTest {
 
-	private String rsb = "rsb";
-
 	private final AtomicInteger methodInvocationCounts = new AtomicInteger();
+
+	private String rsb = "rsb";
 
 	private ScheduledExecutorService decorate(ScheduledExecutorService executorService) {
 		try {
