@@ -10,12 +10,14 @@ import reactor.blockhound.integration.BlockHoundIntegration;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import rsb.reactor.aot.DisabledInGraalVm;
 
 import java.util.ArrayList;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
+@DisabledInGraalVm
 public class BlockhoundTest {
 
 	private final static AtomicBoolean BLOCKHOUND = new AtomicBoolean();
