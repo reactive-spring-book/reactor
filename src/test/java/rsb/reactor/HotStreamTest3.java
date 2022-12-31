@@ -22,7 +22,7 @@ public class HotStreamTest3 {
 	}
 
 	@Test
-	public void publish() throws Exception {
+	public void publish() {
 
 		Flux<Integer> pileOn = Flux.just(1, 2, 3).publish().autoConnect(3).subscribeOn(Schedulers.immediate()); // <1>
 

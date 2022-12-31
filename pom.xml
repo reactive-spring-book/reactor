@@ -71,32 +71,7 @@
     <build>
 
         <plugins>
-            <plugin>
-                <groupId>org.jfrog.buildinfo</groupId>
-                <artifactId>artifactory-maven-plugin</artifactId>
-                <version>${artifactory-maven-plugin.version}</version>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <id>build-info</id>
-                        <goals>
-                            <goal>publish</goal>
-                        </goals>
-                        <configuration>
-                            <publisher>
-                                <contextUrl> 
-                                         https://cloudnativejava.jfrog.io/cloudnativejava
-                                </contextUrl>
-                                <username>${env.ARTIFACTORY_USERNAME}</username>
-                                <password>${env.ARTIFACTORY_PASSWORD}</password>
-                                <repoKey>libs-release-local</repoKey>
-                                <snapshotRepoKey>libs-snapshot-local
-                                </snapshotRepoKey>
-                            </publisher>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

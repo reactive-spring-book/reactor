@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.core.DecoratingProxy;
+import reactor.core.publisher.Flux;
 
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -25,6 +26,8 @@ public class ReactorApplication {
 
 		@Override
 		public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+
+			Flux.just(1);
 			var prefix = "reactor.core.publisher.Traces";
 			var classes = new String[] { prefix, prefix + "$StackWalkerCallSiteSupplierFactory",
 					prefix + "$SharedSecretsCallSiteSupplierFactory", prefix + "$ExceptionCallSiteSupplierFactory" };

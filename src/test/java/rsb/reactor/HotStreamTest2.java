@@ -21,7 +21,7 @@ public class HotStreamTest2 {
 		var factor = 10;
 		log.info("start");
 		var cdl = new CountDownLatch(2);
-		Flux<Integer> live = Flux.range(0, 10).delayElements(Duration.ofMillis(factor)).share();
+		var live = Flux.range(0, 10).delayElements(Duration.ofMillis(factor)).share();
 		var one = new ArrayList<Integer>();
 		var two = new ArrayList<Integer>();
 		live.doFinally(signalTypeConsumer(cdl)).subscribe(collect(one));
